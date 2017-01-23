@@ -24,62 +24,57 @@ class App extends Component {
 class Leaderboard extends Component {
 	constructor(props) {
 		super(props);
-
+		this.state = { dataReceived: [] };
+		// this.props.data.dataReceived = [];
 	}
 	// on load, get the information
+	//state.dataReceived = [];
 
-	// get the info on all the campers
-	// getData: function() {
-	// 	var days30 = axios.get('https://fcctop100.herokuapp.com/api/fccusers/top/recent').then(function(camper) {
-	// 		this.props.data.days30 = {
-	// 			username: camper.username,
-	// 			img: camper.img,
-	// 			alltime: camper.alltime,
-	// 			recent: camper.recent,
-	// 			lastUpdate: camper.lastUpdate
-	// 		}
-	// 	});
-	// 	var allTime = axios.get('https://fcctop100.herokuapp.com/api/fccusers/top/alltime').then(function(camper) {
-	// 		this.props.data.allTime = {
-	// 			username: camper.username,
-	// 			img: camper.img,
-	// 			alltime: camper.alltime,
-	// 			recent: camper.recent,
-	// 			lastUpdate: camper.lastUpdate
-	// 		}
-	// 	});;
+	// getInitialState() {
+	// 	return {
+	// 		dataReceived: []
+	// 	}
 	// }
 
 	componentDidMount() {
+		var _this = this;
+		this.serverRequest = axios.get('https://fcctop100.herokuapp.com/api/fccusers/top/alltime').then(function(result) {
+			_this.setState({
+				dataReceived: result.data
+			});
+		});
 		// getData();
-		this.props.data.dataReceived = axios.get('https://fcctop100.herokuapp.com/api/fccusers/top/alltime');
-		console.log(axios.get('https://fcctop100.herokuapp.com/api/fccusers/top/alltime'));
+		//this.props.dataReceived = axios.get('https://fcctop100.herokuapp.com/api/fccusers/top/alltime');
+		//console.log(axios.get('https://fcctop100.herokuapp.com/api/fccusers/top/alltime'));
+	}
+
+	componentWillUnmount() {
+		this.serverRequest.abort();
 	}
 
 
 	render() {
-
 		// var campers = this.props.data.map(function(camper) {
 		// 	return <Camper />;
 		// });
 		// {campers}
-		return <table>
+		return <table className="Leaderboard">
 			<tr>
 				<td>Leaderboard</td>
 			</tr>
 			<tr>
-				{this.props.data.dataReceived.map(function(camper) {
+				{this.state.dataReceived.map(function(camper) {
 					return (
-						<tr>
+						<tr className="Camper">
 							<td>Username: {camper.username}</td>
-							<td>Img: <img src={camper.img} /></td>
-							<td>AllTime: {camper.allTime}</td>
+							<td>Img: <img className="camper-photo" src={camper.img} /></td>
+							<td>Alltime: {camper.alltime}</td>
+							<td>Recent: {camper.recent}</td>
 						</tr>
 					);
 				})
 				}
 			</tr>
-
 		</table>
 	}
 }
