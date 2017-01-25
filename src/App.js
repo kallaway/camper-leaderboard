@@ -63,6 +63,12 @@ class Leaderboard extends Component {
 				<td>Leaderboard</td>
 			</tr>
 			<tr>
+				<td>#</td>
+				<td>Camper Name</td>
+				<td>Points in past 30 days</td>
+				<td>All time points</td>
+			</tr>
+			<tr>
 				{this.state.dataReceived.map(function(camper) {
 					return (
 						<tr className="Camper">
